@@ -9,7 +9,7 @@
 
         public double CalculateDiscount(double amount)
         {
-            return (amount * (100 - DiscountValue)) / 100;
+            return (amount * DiscountValue) / 100;
         }
     }
 }

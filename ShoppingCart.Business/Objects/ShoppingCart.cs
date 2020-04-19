@@ -1,20 +1,140 @@
-﻿namespace ShoppingCart.Business.Objects
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace ShoppingCart.Business.Objects
 {
     public class ShoppingCart
     {
-        public void AddItem(Product product, double orderQuantity)
-        {
+        private Dictionary<string, ShoppingCartItem> CartItems { get; set; }
+        public bool HasCampaignsApplied { get; set; }
+        public bool HasCouponApplied { get; set; }
+        public Coupon AppliedCoupon { get; set; }
+        public double CouponDiscount { get; set; }
+        public List<Campaign> AssignedCampaigns { get; set; }
 
+        public ShoppingCart()
+        {
+            CartItems = new Dictionary<string, ShoppingCartItem>();
+            AssignedCampaigns = new List<Campaign>();
         }
 
-        public void ApplyDiscounts(params Campaign[] campaigns)
-        {
+        #region Item
 
+        public bool AddItem(Product product, double orderQuantity)
+        {
+            if (product == null || orderQuantity <= 0)
+                return false; //Invalid Products
+
+            if (CartItems.ContainsKey(product.Title))
+                CartItems[product.Title] = CartItems[product.Title].AddQuantity(orderQuantity);
+            else
+                CartItems.Add(product.Title, new ShoppingCartItem(product, orderQuantity));
+
+            return true;
         }
 
-        public void ApplyCoupon(Coupon coupon)
-        {
+        #endregion Item
 
+        #region Campaign Discounts
+
+        public bool ApplyDiscounts(params Campaign[] campaigns)
+        {
+            if (HasCouponApplied)
+                return false; //you cannot apply a campaign after coupon is applied. Please remove it first.
+
+            //Get only campaigns that haven't applied previously.
+            var newCampaigns = campaigns.Where(ac => !AssignedCampaigns.Contains(ac)).ToList();
+            if (!newCampaigns.Any())
+                return false;
+
+            AssignedCampaigns.AddRange(newCampaigns);
+            HasCampaignsApplied = true;
+            return HasCampaignsApplied;
         }
+
+        public double GetCampaignDiscount()
+        {
+            foreach (var shoppingCartItem in CartItems.Values)
+            {
+                shoppingCartItem.ApplyBestCampaign(AssignedCampaigns);
+            }
+
+            return CartItems.Values.Sum(x => x.BestCampaignDiscount.DiscountAmount);
+        }
+
+        #endregion
+
+        #region Coupon
+
+        public bool ApplyCoupon(Coupon coupon)
+        {
+            if (HasCouponApplied || CartItems.Count == 0)
+                return false; //A coupon is already applied before.
+
+            var amountAfterCampaignDiscount = GetTotalAmount() - GetCampaignDiscount();
+            if (coupon.IsApplicable(amountAfterCampaignDiscount))
+            {
+                AppliedCoupon = coupon;
+                CouponDiscount = coupon.CalculateDiscount(amountAfterCampaignDiscount);
+                HasCouponApplied = true;
+            }
+
+            return this.HasCouponApplied;
+        }
+
+        public bool RemoveCoupon()
+        {
+            if (!HasCouponApplied)
+                return false; //there is no coupon to remove.
+
+            AppliedCoupon = null;
+            CouponDiscount = 0;
+            HasCouponApplied = false;
+
+            return true;
+        }
+
+        public double GetCouponDiscount()
+        {
+            return CouponDiscount;
+        }
+
+        #endregion
+
+        #region Delivery
+
+        public double GetNumberOfDeliveries()
+        {
+            return CartItems.SelectMany(x => x.Value.Product.GetAllCategories()).Distinct().Count();
+        }
+
+        public double GetNumberOfProducts()
+        {
+            return CartItems.Count();
+        }
+
+        #endregion Delivery
+
+        public Dictionary<string, ShoppingCartItem> GetCartItems()
+        {
+            return CartItems;
+        }
+
+        public double GetTotalAmountAfterDiscounts()
+        {
+            var totalAmountAfterDiscount = GetTotalAmount() - GetCampaignDiscount() - GetCouponDiscount();
+            return totalAmountAfterDiscount < 0 ? 0 : totalAmountAfterDiscount;
+        }
+
+        public double GetTotalAmount()
+        {
+            return CartItems.Values.Sum(x => x.TotalAmount);
+        }
+
+        public void Print()
+        {
+            //TODO:Think using builder pattern
+        }
+
     }
 }

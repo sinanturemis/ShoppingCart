@@ -3,24 +3,17 @@ using ShoppingCart.Business.Factories;
 
 namespace ShoppingCart.Business.Objects
 {
-    public class Coupon
+    public class Coupon : Discount
     {
-        public decimal MinimumPurchaseAmount { get; set; }
-        public IDiscountStrategy DiscountStrategy { get; set; }
+        public double MinimumPurchaseAmount { get; set; }
 
-        public Coupon(decimal minimumPurchaseAmount, int discountValue, DiscountType discountType)
+        public Coupon(double minimumPurchaseAmount, int discountValue, DiscountType discountType) :
+            base(DiscountFactory.GetDiscountStrategy(discountType, discountValue))
         {
             MinimumPurchaseAmount = minimumPurchaseAmount;
-            DiscountStrategy = DiscountFactory.GetDiscountStrategy(discountType, discountValue);
         }
 
-        public Coupon(decimal minimumPurchaseAmount, IDiscountStrategy discountStrategy)
-        {
-            MinimumPurchaseAmount = minimumPurchaseAmount;
-            DiscountStrategy = discountStrategy;
-        }
-
-        public bool IsApplicable(decimal cartPurchaseAmount)
+        public bool IsApplicable(double cartPurchaseAmount)
         {
             return this.MinimumPurchaseAmount <= cartPurchaseAmount;
         }

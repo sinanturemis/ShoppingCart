@@ -11,7 +11,7 @@ namespace ShoppingCart.Business.DiscountStrategy
 
         public double CalculateDiscount(double amount)
         {
-            return amount - DiscountValue;
+            return DiscountValue;
         }
     }
 }
