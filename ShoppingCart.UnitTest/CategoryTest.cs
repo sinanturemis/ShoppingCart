@@ -6,20 +6,28 @@ namespace ShoppingCart.UnitTest
     [TestFixture]
     public class CategoryTest
     {
+        private Category _categoryWithParentCategory;
+        private Category _categoryWithoutParentCategory;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _categoryWithParentCategory = new Category("Child Category", new Category("Parent Category"));
+            _categoryWithoutParentCategory = new Category("Child Category");
+        }
+
         #region HasParent
 
         [Test]
         public void HasParent_ShouldHave_WithParentCategory()
         {
-            var category = new Category("Child Category", new Category("Parent Category"));
-            Assert.IsTrue(category.HasParent());
+            Assert.IsTrue(_categoryWithParentCategory.HasParent());
         }
 
         [Test]
         public void HasParent_ShouldntHave_WithoutParentCategory()
         {
-            var category = new Category("Child Category");
-            Assert.IsFalse(category.HasParent());
+            Assert.IsFalse(_categoryWithoutParentCategory.HasParent());
         }
 
         #endregion
@@ -29,15 +37,13 @@ namespace ShoppingCart.UnitTest
         [Test]
         public void GetParent_ShouldReturn_WithParentCategory()
         {
-            var category = new Category("Child Category", new Category("Parent Category"));
-            Assert.NotNull(category.GetParent());
+            Assert.NotNull(_categoryWithParentCategory.GetParent());
         }
 
         [Test]
         public void GetParent_ShouldntReturn_WithoutParentCategory()
         {
-            var category = new Category("Child Category");
-            Assert.IsNull(category.GetParent());
+            Assert.IsNull(_categoryWithoutParentCategory.GetParent());
         }
 
 

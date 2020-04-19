@@ -4,31 +4,28 @@ using ShoppingCart.Business.Objects;
 namespace ShoppingCart.UnitTest.ShoppingCartTests
 {
     [TestFixture]
-    public class GetNumberOfProductsTest
+    public class GetNumberOfProductsTest: ShoppingCartTest
     {
         [Test]
         public void GetNumberOfProduct_ShouldBeZero_EmptyCart()
         {
-            var cart = new Business.Objects.ShoppingCart();
-            Assert.Zero(cart.GetNumberOfProducts());
+            Assert.Zero(Cart.GetNumberOfProducts());
         }
 
         [Test]
         public void GetNumberOfProduct_ShouldBeOne_OneProductQuantityWithOneProduct()
         {
-            var cart = new Business.Objects.ShoppingCart();
-            cart.AddItem(new Product("Toshiba Tv", 4000, new Category("Electronic")), 1);
+            Cart.AddItem(new Product("Toshiba Tv", 4000, new Category("Electronic")), 1);
 
-            Assert.AreEqual(1, cart.GetNumberOfProducts());
+            Assert.AreEqual(1, Cart.GetNumberOfProducts());
         }
 
         [Test]
         public void GetNumberOfProduct_ShouldBeOne_TwoProductQuantityWithOneProduct()
         {
-            var cart = new Business.Objects.ShoppingCart();
-            cart.AddItem(new Product("Toshiba Tv", 4000, new Category("Electronic")), 2);
+            Cart.AddItem(new Product("Toshiba Tv", 4000, new Category("Electronic")), 2);
 
-            Assert.AreEqual(1, cart.GetNumberOfProducts());
+            Assert.AreEqual(1, Cart.GetNumberOfProducts());
         }
 
         [Test]
@@ -37,11 +34,10 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, new Category("Electronic"));
             var lenovoLaptopProduct = new Product("Lenovo Laptop", 7000, new Category("Laptop"));
 
-            var cart = new Business.Objects.ShoppingCart();
-            cart.AddItem(toshibaTvProduct, 1);
-            cart.AddItem(lenovoLaptopProduct, 2);
+            Cart.AddItem(toshibaTvProduct, 1);
+            Cart.AddItem(lenovoLaptopProduct, 2);
 
-            Assert.AreEqual(2, cart.GetNumberOfProducts());
+            Assert.AreEqual(2, Cart.GetNumberOfProducts());
         }
     }
 }

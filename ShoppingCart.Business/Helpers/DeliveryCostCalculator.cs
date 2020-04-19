@@ -1,6 +1,8 @@
-﻿namespace ShoppingCart.Business.Helpers
+﻿using ShoppingCart.Business.Interfaces;
+
+namespace ShoppingCart.Business.Helpers
 {
-    public class DeliveryCostCalculator
+    public class DeliveryCostCalculator : IDeliveryCostCalculator
     {
         public double CostPerDelivery { get; set; }
         public double CostPerProduct { get; set; }
@@ -13,9 +15,14 @@
             FixedCost = fixedCost;
         }
 
-        public double CalculateFor(Objects.ShoppingCart shoppingCart)
+        public double CalculateFor(IShoppingCart shoppingCart)
         {
-            return 0.0;
+            if (shoppingCart.GetNumberOfProducts() == 0)
+                return 0.0;
+
+            return CostPerDelivery * shoppingCart.GetNumberOfDeliveries() +
+                   CostPerProduct * shoppingCart.GetNumberOfProducts() +
+                   FixedCost;
         }
     }
 }

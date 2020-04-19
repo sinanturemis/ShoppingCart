@@ -6,27 +6,31 @@ namespace ShoppingCart.UnitTest
     [TestFixture]
     public class CouponTest
     {
+        private Coupon _coupon;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _coupon = new Coupon(100, 20, DiscountType.Amount);
+        }
+
         [Test]
         public void CheckIfApplicable_ShouldBeApplicable_ExactAmountBiggerThanExpectedAmount()
         {
-            var campaign = new Coupon(100, 20, DiscountType.Amount);
-            Assert.IsTrue(campaign.IsApplicable(150));
+            Assert.IsTrue(_coupon.IsApplicable(150));
         }
 
         [Test]
         public void CheckIfApplicable_ShouldBeApplicable_ExactAmountEqualsExpectedAmount()
         {
-            var campaign = new Coupon(100, 20, DiscountType.Amount);
-
             //Request => if cart amount is less than minimum, discount is not applied (Equality is acceptable to apply a coupon)
-            Assert.IsTrue(campaign.IsApplicable(100));
+            Assert.IsTrue(_coupon.IsApplicable(100));
         }
 
         [Test]
         public void CheckIfApplicable_ShouldntBeApplicable_ExactAmountLessThanExpectedAmount()
         {
-            var campaign = new Coupon(100, 20, DiscountType.Amount);
-            Assert.IsFalse(campaign.IsApplicable(60));
+            Assert.IsFalse(_coupon.IsApplicable(60));
         }
     }
 }

@@ -4,13 +4,12 @@ using ShoppingCart.Business.Objects;
 namespace ShoppingCart.UnitTest.ShoppingCartTests
 {
     [TestFixture]
-    public class GetCampaignDiscountTest
+    public class GetCampaignDiscountTest : ShoppingCartTest
     {
         [Test]
         public void GetCampaignDiscount_ShouldBeZero_EmptyCart()
         {
-            var cart = new Business.Objects.ShoppingCart();
-            Assert.Zero(cart.GetCampaignDiscount());
+            Assert.Zero(Cart.GetCampaignDiscount());
         }
 
         [Test]
@@ -20,11 +19,10 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
             var electronicCampaign = new Campaign(electronicCategory, 10, 500, DiscountType.Amount);
             var toshibaTvProduct = new Product("Toshiba Tv", 100, electronicCategory);
 
-            var cart = new Business.Objects.ShoppingCart();
-            cart.AddItem(toshibaTvProduct, 3);
-            cart.ApplyDiscounts(electronicCampaign);
+            Cart.AddItem(toshibaTvProduct, 3);
+            Cart.ApplyDiscounts(electronicCampaign);
 
-            Assert.Zero(cart.GetCampaignDiscount());
+            Assert.Zero(Cart.GetCampaignDiscount());
         }
 
         [Test]
@@ -34,11 +32,10 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
             var electronicCampaign = new Campaign(electronicCategory, 10, 1, DiscountType.Amount);
             var toshibaTvProduct = new Product("Toshiba Tv", 100, electronicCategory);
 
-            var cart = new Business.Objects.ShoppingCart();
-            cart.AddItem(toshibaTvProduct, 3);
-            cart.ApplyDiscounts(electronicCampaign);
+            Cart.AddItem(toshibaTvProduct, 3);
+            Cart.ApplyDiscounts(electronicCampaign);
 
-            Assert.Greater(cart.GetCampaignDiscount(), 0);
+            Assert.Greater(Cart.GetCampaignDiscount(), 0);
         }
     }
 }

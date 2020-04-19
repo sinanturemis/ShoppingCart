@@ -4,16 +4,15 @@ using ShoppingCart.Business.Objects;
 namespace ShoppingCart.UnitTest.ShoppingCartTests
 {
     [TestFixture]
-    public class RemoveCouponTest
+    public class RemoveCouponTest: ShoppingCartTest
     {
         [Test]
         public void RemoveCoupon_ShouldntBeRemoved_NoAppliedCoupon()
         {
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, new Category("Electronic"));
 
-            var cart = new Business.Objects.ShoppingCart();
-            var addItemResult = cart.AddItem(toshibaTvProduct, 2);
-            var removeCouponResult = cart.RemoveCoupon();
+            var addItemResult = Cart.AddItem(toshibaTvProduct, 2);
+            var removeCouponResult = Cart.RemoveCoupon();
 
             Assert.IsTrue(addItemResult);
             Assert.IsFalse(removeCouponResult);
@@ -24,11 +23,9 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
         {
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, new Category("Electronic"));
 
-            var cart = new Business.Objects.ShoppingCart();
-
-            var addItemResult = cart.AddItem(toshibaTvProduct, 2);
-            var addCouponResult = cart.ApplyCoupon(new Coupon(6000, 10, DiscountType.Rate));
-            var removeCouponResult = cart.RemoveCoupon();
+            var addItemResult = Cart.AddItem(toshibaTvProduct, 2);
+            var addCouponResult = Cart.ApplyCoupon(new Coupon(6000, 10, DiscountType.Rate));
+            var removeCouponResult = Cart.RemoveCoupon();
 
             Assert.IsTrue(addItemResult);
             Assert.IsTrue(addCouponResult);

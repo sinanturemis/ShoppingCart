@@ -1,20 +1,21 @@
 ﻿using System.Linq;
+using Moq;
 using NUnit.Framework;
+using ShoppingCart.Business.Interfaces;
 using ShoppingCart.Business.Objects;
 
 namespace ShoppingCart.UnitTest.ShoppingCartTests
 {
     [TestFixture]
-    public class AddItemTest
+    public class AddItemTest : ShoppingCartTest
     {
         [Test]
         public void AddItem_ShouldBeAddedAsNew_EmptyCart()
         {
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, new Category("Electronic"));
 
-            var cart = new Business.Objects.ShoppingCart();
-            var actualResult = cart.AddItem(toshibaTvProduct, 2);
-            var cartItems = cart.GetCartItems();
+            var actualResult = Cart.AddItem(toshibaTvProduct, 2);
+            var cartItems = Cart.GetCartItems();
 
             Assert.IsTrue(actualResult);
             Assert.IsTrue(cartItems.Count == 1);
@@ -24,16 +25,14 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
         [Test]
         public void AddItem_ShouldBeAddedAsNew_NotExistingProductInCart()
         {
-            var cart = new Business.Objects.ShoppingCart();
-
             var category = new Category("Electronic");
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, category);
             var lenovoLaptopProduct = new Product("Lenovo Laptop", 7000, category);
 
-            var actualResultForFirstAdding = cart.AddItem(toshibaTvProduct, 2);
-            var actualResultForSecondAdding = cart.AddItem(lenovoLaptopProduct, 3);
+            var actualResultForFirstAdding = Cart.AddItem(toshibaTvProduct, 2);
+            var actualResultForSecondAdding = Cart.AddItem(lenovoLaptopProduct, 3);
 
-            var cartItems = cart.GetCartItems();
+            var cartItems = Cart.GetCartItems();
 
             Assert.IsTrue(actualResultForFirstAdding);
             Assert.IsTrue(actualResultForSecondAdding);
@@ -44,15 +43,13 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
         [Test]
         public void AddItem_ShouldBeAddedOnExistingOne_ExistingProductInCart()
         {
-            var cart = new Business.Objects.ShoppingCart();
-
             var category = new Category("Electronic");
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, category);
 
-            var actualResultForFirstAdding = cart.AddItem(toshibaTvProduct, 2);
-            var actualResultForSecondAdding = cart.AddItem(toshibaTvProduct, 3);
+            var actualResultForFirstAdding = Cart.AddItem(toshibaTvProduct, 2);
+            var actualResultForSecondAdding = Cart.AddItem(toshibaTvProduct, 3);
 
-            var cartItems = cart.GetCartItems();
+            var cartItems = Cart.GetCartItems();
 
             Assert.IsTrue(actualResultForFirstAdding);
             Assert.IsTrue(actualResultForSecondAdding);
@@ -63,16 +60,14 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
         [Test]
         public void AddItem_ShouldBeAddedOnExistingOne_SameProductAsDifferentInstance()
         {
-            var cart = new Business.Objects.ShoppingCart();
-
             var category = new Category("Electronic");
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, category);
             var toshibaTvProduct2 = new Product("Toshiba Tv", 4000, category);
 
-            var actualResultForFirstAdding = cart.AddItem(toshibaTvProduct, 2);
-            var actualResultForSecondAdding = cart.AddItem(toshibaTvProduct2, 3);
+            var actualResultForFirstAdding = Cart.AddItem(toshibaTvProduct, 2);
+            var actualResultForSecondAdding = Cart.AddItem(toshibaTvProduct2, 3);
 
-            var cartItems = cart.GetCartItems();
+            var cartItems = Cart.GetCartItems();
 
             Assert.IsTrue(actualResultForFirstAdding);
             Assert.IsTrue(actualResultForSecondAdding);
@@ -86,10 +81,9 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, new Category("Electronic"));
             Product toshibaTvProduct2 = null;
 
-            var cart = new Business.Objects.ShoppingCart();
-            var actualResultForFirstAdding = cart.AddItem(toshibaTvProduct, 2);
-            var actualResultForSecondAdding = cart.AddItem(toshibaTvProduct2, 3);
-            var cartItems = cart.GetCartItems();
+            var actualResultForFirstAdding = Cart.AddItem(toshibaTvProduct, 2);
+            var actualResultForSecondAdding = Cart.AddItem(toshibaTvProduct2, 3);
+            var cartItems = Cart.GetCartItems();
 
             Assert.IsTrue(actualResultForFirstAdding);
             Assert.IsFalse(actualResultForSecondAdding);
@@ -102,9 +96,8 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
         {
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, new Category("Electronic"));
 
-            var cart = new Business.Objects.ShoppingCart();
-            var actualResult = cart.AddItem(toshibaTvProduct, 0);
-            var cartItems = cart.GetCartItems();
+            var actualResult = Cart.AddItem(toshibaTvProduct, 0);
+            var cartItems = Cart.GetCartItems();
 
             Assert.IsFalse(actualResult);
             Assert.Zero(cartItems.Count);
@@ -116,9 +109,8 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
         {
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, new Category("Electronic"));
 
-            var cart = new Business.Objects.ShoppingCart();
-            cart.AddItem(toshibaTvProduct, -3);
-            var cartItems = cart.GetCartItems();
+            Cart.AddItem(toshibaTvProduct, -3);
+            var cartItems = Cart.GetCartItems();
 
             Assert.Zero(cartItems.Count);
             Assert.Zero(cartItems.Values.Sum(x => x.OrderQuantity));

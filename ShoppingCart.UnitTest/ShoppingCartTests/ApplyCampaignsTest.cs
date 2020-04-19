@@ -4,16 +4,14 @@ using ShoppingCart.Business.Objects;
 namespace ShoppingCart.UnitTest.ShoppingCartTests
 {
     [TestFixture]
-    public class ApplyCampaignsTest
+    public class ApplyCampaignsTest : ShoppingCartTest
     {
         [Test]
         public void ApplyCampaigns_ShouldBeAdded_CouponAndCampaignsHaventApplied()
         {
             var campaign = new Campaign(new Category("Electronic"), 5, 1, DiscountType.Rate);
 
-            var cart = new Business.Objects.ShoppingCart();
-
-            Assert.IsTrue(cart.ApplyDiscounts(campaign));
+            Assert.IsTrue(Cart.ApplyDiscounts(campaign));
         }
 
         [Test]
@@ -21,9 +19,8 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
         {
             var campaign = new Campaign(new Category("Electronic"), 5, 1, DiscountType.Rate);
 
-            var cart = new Business.Objects.ShoppingCart();
-            var addDiscountResult = cart.ApplyDiscounts(campaign);
-            var addDiscountResultSecond = cart.ApplyDiscounts(campaign);
+             var addDiscountResult = Cart.ApplyDiscounts(campaign);
+            var addDiscountResultSecond = Cart.ApplyDiscounts(campaign);
 
             Assert.IsTrue(addDiscountResult);
             Assert.IsFalse(addDiscountResultSecond);
@@ -36,11 +33,10 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
             var campaign = new Campaign(category, 5, 1, DiscountType.Rate);
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, category);
 
-            var cart = new Business.Objects.ShoppingCart();
-            cart.AddItem(toshibaTvProduct, 3);
+            Cart.AddItem(toshibaTvProduct, 3);
 
-            var addCouponResult = cart.ApplyCoupon(new Coupon(100, 10, DiscountType.Amount));
-            var addDiscountResult = cart.ApplyDiscounts(campaign);
+            var addCouponResult = Cart.ApplyCoupon(new Coupon(100, 10, DiscountType.Amount));
+            var addDiscountResult = Cart.ApplyDiscounts(campaign);
 
             Assert.IsTrue(addCouponResult);
             Assert.IsFalse(addDiscountResult);

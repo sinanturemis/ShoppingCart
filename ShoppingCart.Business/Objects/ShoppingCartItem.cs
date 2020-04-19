@@ -19,7 +19,6 @@ namespace ShoppingCart.Business.Objects
             UpdateTotalAmount();
         }
 
-
         public ShoppingCartItem AddQuantity(double quantity)
         {
             OrderQuantity += quantity;

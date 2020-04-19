@@ -5,19 +5,19 @@ using ShoppingCart.Business.Objects;
 namespace ShoppingCart.UnitTest.ShoppingCartTests
 {
     [TestFixture]
-    public class ApplyCouponTest
+    public class ApplyCouponTest: ShoppingCartTest
+
     {
         [Test]
         public void ApplyCoupon_ShouldntBeApplied_ACouponAlreadyApplied()
         {
-            var cart = new Business.Objects.ShoppingCart();
-
+          
             var category = new Category("Electronic");
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, category);
 
-            var addItemResult = cart.AddItem(toshibaTvProduct, 2);
-            var addCouponResult = cart.ApplyCoupon(new Coupon(6000, 10, DiscountType.Rate));
-            var addOtherCouponResult = cart.ApplyCoupon(new Coupon(7000, 100, DiscountType.Amount));
+            var addItemResult = Cart.AddItem(toshibaTvProduct, 2);
+            var addCouponResult = Cart.ApplyCoupon(new Coupon(6000, 10, DiscountType.Rate));
+            var addOtherCouponResult = Cart.ApplyCoupon(new Coupon(7000, 100, DiscountType.Amount));
 
             Assert.IsTrue(addItemResult);
             Assert.IsTrue(addCouponResult);
@@ -29,10 +29,8 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
         {
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, new Category("Electronic"));
 
-            var cart = new Business.Objects.ShoppingCart();
-
-            Assert.IsTrue(cart.AddItem(toshibaTvProduct, 2));
-            Assert.IsTrue(cart.ApplyCoupon(new Coupon(6000, 10, DiscountType.Rate)));
+            Assert.IsTrue(Cart.AddItem(toshibaTvProduct, 2));
+            Assert.IsTrue(Cart.ApplyCoupon(new Coupon(6000, 10, DiscountType.Rate)));
         }
 
         [Test]
@@ -40,23 +38,19 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
         {
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, new Category("Electronic"));
 
-            var cart = new Business.Objects.ShoppingCart();
-
-            Assert.IsTrue(cart.AddItem(toshibaTvProduct, 2));
-            Assert.IsTrue(cart.ApplyCoupon(new Coupon(8000, 10, DiscountType.Rate)));
+            Assert.IsTrue(Cart.AddItem(toshibaTvProduct, 2));
+            Assert.IsTrue(Cart.ApplyCoupon(new Coupon(8000, 10, DiscountType.Rate)));
         }
 
         [Test]
         public void ApplyCoupon_ShouldntBeApplied_CartAmountLessThanCouponMinAmount()
         {
-            var cart = new Business.Objects.ShoppingCart();
-
             var toshibaTvProduct = new Product("Toshiba Tv", 4000, new Category("Electronic"));
 
-            var addItemResult = cart.AddItem(toshibaTvProduct, 2);
-            var addCouponResult = cart.ApplyCoupon(new Coupon(9000, 10, DiscountType.Rate));
+            var addItemResult = Cart.AddItem(toshibaTvProduct, 2);
+            var addCouponResult = Cart.ApplyCoupon(new Coupon(9000, 10, DiscountType.Rate));
 
-            var cartItems = cart.GetCartItems();
+            var cartItems = Cart.GetCartItems();
 
             Assert.IsTrue(addItemResult);
             Assert.IsFalse(addCouponResult);

@@ -1,21 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using ShoppingCart.Business.Interfaces;
 
 namespace ShoppingCart.Business.Objects
 {
-    public class ShoppingCart
+    public class ShoppingCart : IShoppingCart
     {
-        private Dictionary<string, ShoppingCartItem> CartItems { get; set; }
+        private Dictionary<string, ShoppingCartItem> CartItems { get; }
+
+        private IDeliveryCostCalculator DeliveryCostCalculator { get; }
+
         public bool HasCampaignsApplied { get; set; }
+        public List<Campaign> AssignedCampaigns { get; set; }
+
         public bool HasCouponApplied { get; set; }
         public Coupon AppliedCoupon { get; set; }
         public double CouponDiscount { get; set; }
-        public List<Campaign> AssignedCampaigns { get; set; }
 
-        public ShoppingCart()
+        public ShoppingCart(IDeliveryCostCalculator deliveryCostCalculator)
         {
             CartItems = new Dictionary<string, ShoppingCartItem>();
             AssignedCampaigns = new List<Campaign>();
+            DeliveryCostCalculator = deliveryCostCalculator;
         }
 
         #region Item
@@ -31,6 +38,11 @@ namespace ShoppingCart.Business.Objects
                 CartItems.Add(product.Title, new ShoppingCartItem(product, orderQuantity));
 
             return true;
+        }
+
+        public Dictionary<string, ShoppingCartItem> GetCartItems()
+        {
+            return CartItems;
         }
 
         #endregion Item
@@ -69,7 +81,7 @@ namespace ShoppingCart.Business.Objects
         public bool ApplyCoupon(Coupon coupon)
         {
             if (HasCouponApplied || CartItems.Count == 0)
-                return false; //A coupon is already applied before.
+                return false; //A coupon is already applied before. || There is item to apply a coupon.
 
             var amountAfterCampaignDiscount = GetTotalAmount() - GetCampaignDiscount();
             if (coupon.IsApplicable(amountAfterCampaignDiscount))
@@ -108,17 +120,14 @@ namespace ShoppingCart.Business.Objects
             return CartItems.SelectMany(x => x.Value.Product.GetAllCategories()).Distinct().Count();
         }
 
-        public double GetNumberOfProducts()
+        public int GetNumberOfProducts()
         {
             return CartItems.Count();
         }
 
         #endregion Delivery
 
-        public Dictionary<string, ShoppingCartItem> GetCartItems()
-        {
-            return CartItems;
-        }
+        #region CartAmount
 
         public double GetTotalAmountAfterDiscounts()
         {
@@ -131,10 +140,18 @@ namespace ShoppingCart.Business.Objects
             return CartItems.Values.Sum(x => x.TotalAmount);
         }
 
+        #endregion
+
+        #region Print
+
         public void Print()
         {
+            var deliveryCost = DeliveryCostCalculator.CalculateFor(this);
+            Console.WriteLine(deliveryCost);
             //TODO:Think using builder pattern
         }
+
+        #endregion
 
     }
 }
