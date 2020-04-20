@@ -8,7 +8,7 @@ namespace ShoppingCart.Business.Objects
     {
         public Product Product { get; set; }
         public double OrderQuantity { get; set; }
-        public double TotalPrice { get; set; }
+        public double TotalPrice => this.Product.UnitPrice * OrderQuantity;
         public CampaignDiscountModel BestCampaignDiscount { get; set; }
 
         public ShoppingCartItem(Product product, double orderQuantity)
@@ -16,30 +16,26 @@ namespace ShoppingCart.Business.Objects
             this.Product = product;
             this.OrderQuantity = orderQuantity;
             this.BestCampaignDiscount = new CampaignDiscountModel();
-            UpdateTotalPrice();
         }
 
         public ShoppingCartItem AddQuantity(double quantity)
         {
             OrderQuantity += quantity;
-            UpdateTotalPrice();
             return this;
         }
 
-        private void UpdateTotalPrice()
+        public void ApplyBestCampaign(IEnumerable<Campaign> campaigns)
         {
-            this.TotalPrice = Product.Price * OrderQuantity;
-        }
-
-        public void ApplyBestCampaign(List<Campaign> campaigns)
-        {
+            // Get all categories of product (get current and its ancestors categories)
             var productCategories = this.Product.GetAllCategories();
-            var validCampaigns = campaigns.Where(c => productCategories.Contains(c.Category));
 
-            foreach (var campaign in validCampaigns)
+            //Only campaigns that has same category with product can be applied. So, filter campaigns if they are in those categories.
+            var applicableCampaigns = campaigns.Where(c => productCategories.Contains(c.Category));
+
+            foreach (var campaign in applicableCampaigns)
             {
-                var discountAmount = campaign.IsApplicable(this.OrderQuantity) ?
-                    campaign.CalculateDiscount(this.OrderQuantity * this.Product.Price) : 0;
+                //Check if applicable and calculate the discount if its applicable otherwise discount is 0.
+                var discountAmount = campaign.IsApplicable(this.OrderQuantity) ? campaign.CalculateDiscount(this.OrderQuantity * this.Product.UnitPrice) : 0;
 
                 if (this.BestCampaignDiscount.DiscountAmount < discountAmount)
                     this.BestCampaignDiscount = this.BestCampaignDiscount.Update(campaign, discountAmount);

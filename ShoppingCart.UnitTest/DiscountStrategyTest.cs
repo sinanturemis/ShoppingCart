@@ -1,6 +1,7 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
+using ShoppingCart.Business;
 using ShoppingCart.Business.DiscountStrategy;
 using ShoppingCart.Business.Factories;
 using ShoppingCart.Business.Objects;

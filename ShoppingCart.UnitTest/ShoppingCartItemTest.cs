@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
+using ShoppingCart.Business;
 using ShoppingCart.Business.Objects;
 
 namespace ShoppingCart.UnitTest

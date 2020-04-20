@@ -1,4 +1,4 @@
-﻿namespace ShoppingCart.Business.Objects
+﻿namespace ShoppingCart.Business
 {
     public enum DiscountType
     {

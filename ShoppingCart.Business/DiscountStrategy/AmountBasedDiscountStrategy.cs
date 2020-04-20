@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ShoppingCart.Business.DiscountStrategy
+﻿namespace ShoppingCart.Business.DiscountStrategy
 {
     public class AmountBasedDiscountStrategy : DiscountBase, IDiscountStrategy
     {

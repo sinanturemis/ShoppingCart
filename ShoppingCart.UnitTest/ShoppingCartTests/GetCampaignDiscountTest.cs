@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ShoppingCart.Business;
 using ShoppingCart.Business.Objects;
 
 namespace ShoppingCart.UnitTest.ShoppingCartTests

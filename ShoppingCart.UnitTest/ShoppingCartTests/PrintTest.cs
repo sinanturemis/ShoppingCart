@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Moq;
-using NUnit.Framework;
-using ShoppingCart.Business.Interfaces;
+﻿using NUnit.Framework;
+using ShoppingCart.Business;
 using ShoppingCart.Business.Objects;
 
 namespace ShoppingCart.UnitTest.ShoppingCartTests
@@ -11,6 +7,24 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
     [TestFixture]
     public class PrintTest : ShoppingCartTest
     {
+        [Test]
+        public void Print_ShouldBeExactValue_WithEmptyCart()
+        {
+            var result = Cart.Print();
+
+            Assert.AreEqual(
+                @"   Category Name |     Product Name |         Quantity |       Unit Price |       TotalPrice | Campaign Discount | 
+                                                            No item in the cart.
+
+Cart Total Amount: 0,00
+Cart Net Amount: 0,00
+Campaign Discounts: 0,00
+Coupon Discount: 0,00
+Delivery Cost: 50,00
+", result);
+
+        }
+
         [Test]
         public void Print_ShouldBeExactValue_OneProductWithCampaign()
         {
@@ -24,13 +38,13 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
 
             Assert.AreEqual(
                 @"   Category Name |     Product Name |         Quantity |       Unit Price |       TotalPrice | Campaign Discount | 
-      Electronic |       Toshiba Tv |                3 |             4000 |            12000 |              100 | 
+      Electronic |       Toshiba Tv |             3,00 |          4000,00 |         12000,00 |           100,00 | 
 
-Cart Total Amount: 12000
-Cart Net Amount: 11900
-Campaign Discounts: 100
-Coupon Discount: 0
-Delivery Cost: 50
+Cart Total Amount: 12000,00
+Cart Net Amount: 11900,00
+Campaign Discounts: 100,00
+Coupon Discount: 0,00
+Delivery Cost: 50,00
 ", result);
 
         }
@@ -47,13 +61,13 @@ Delivery Cost: 50
 
             Assert.AreEqual(
                 @"   Category Name |     Product Name |         Quantity |       Unit Price |       TotalPrice | Campaign Discount | 
-      Electronic |       Toshiba Tv |                3 |             4000 |            12000 |                0 | 
+      Electronic |       Toshiba Tv |             3,00 |          4000,00 |         12000,00 |             0,00 | 
 
-Cart Total Amount: 12000
-Cart Net Amount: 11900
-Campaign Discounts: 0
-Coupon Discount: 100
-Delivery Cost: 50
+Cart Total Amount: 12000,00
+Cart Net Amount: 11900,00
+Campaign Discounts: 0,00
+Coupon Discount: 100,00
+Delivery Cost: 50,00
 ", result);
         }
 
@@ -71,13 +85,13 @@ Delivery Cost: 50
 
             Assert.AreEqual(
                 @"   Category Name |     Product Name |         Quantity |       Unit Price |       TotalPrice | Campaign Discount | 
-      Electronic |       Toshiba Tv |                5 |             4000 |            20000 |              100 | 
+      Electronic |       Toshiba Tv |             5,00 |          4000,00 |         20000,00 |           100,00 | 
 
-Cart Total Amount: 20000
-Cart Net Amount: 19900
-Campaign Discounts: 100
-Coupon Discount: 0
-Delivery Cost: 50
+Cart Total Amount: 20000,00
+Cart Net Amount: 19900,00
+Campaign Discounts: 100,00
+Coupon Discount: 0,00
+Delivery Cost: 50,00
 ", result);
         }
 
@@ -94,13 +108,13 @@ Delivery Cost: 50
 
             Assert.AreEqual(
                 @"   Category Name |     Product Name |         Quantity |       Unit Price |       TotalPrice | Campaign Discount | 
-      Electronic |       Toshiba Tv |                5 |             4000 |            20000 |                0 | 
+      Electronic |       Toshiba Tv |             5,00 |          4000,00 |         20000,00 |             0,00 | 
 
-Cart Total Amount: 20000
-Cart Net Amount: 19900
-Campaign Discounts: 0
-Coupon Discount: 100
-Delivery Cost: 50
+Cart Total Amount: 20000,00
+Cart Net Amount: 19900,00
+Campaign Discounts: 0,00
+Coupon Discount: 100,00
+Delivery Cost: 50,00
 ", result);
         }
 
@@ -116,14 +130,14 @@ Delivery Cost: 50
 
             Assert.AreEqual(
                 @"   Category Name |     Product Name |         Quantity |       Unit Price |       TotalPrice | Campaign Discount | 
-      Electronic |       Toshiba Tv |                3 |             4000 |            12000 |                0 | 
-     Supermarket |           Diaper |                2 |              160 |              320 |                0 | 
+      Electronic |       Toshiba Tv |             3,00 |          4000,00 |         12000,00 |             0,00 | 
+     Supermarket |           Diaper |             2,00 |           160,00 |           320,00 |             0,00 | 
 
-Cart Total Amount: 12320
-Cart Net Amount: 12320
-Campaign Discounts: 0
-Coupon Discount: 0
-Delivery Cost: 50
+Cart Total Amount: 12320,00
+Cart Net Amount: 12320,00
+Campaign Discounts: 0,00
+Coupon Discount: 0,00
+Delivery Cost: 50,00
 ", result);
         }
 

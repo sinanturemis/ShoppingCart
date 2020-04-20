@@ -17,6 +17,7 @@ namespace ShoppingCart.Business.Helpers
 
         public double CalculateFor(IShoppingCart shoppingCart)
         {
+            //If there is no product, so there is no item to deliver. This mean, its delivery cost should be 0.
             if (shoppingCart.GetNumberOfProducts() == 0)
                 return 0.0;
 

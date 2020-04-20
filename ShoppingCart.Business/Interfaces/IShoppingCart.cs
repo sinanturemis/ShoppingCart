@@ -10,6 +10,8 @@ namespace ShoppingCart.Business.Interfaces
         bool ApplyDiscounts(params Campaign[] campaigns);
         double GetCampaignDiscount();
         bool ApplyCoupon(Coupon coupon);
+
+        /* This one is not requested but the request says 'if a coupon has applied you cannot apply a campaign'. Not to be locked after adding any campaign, this ability is required. This is the reason why I implemented this.*/
         bool RemoveCoupon();
         double GetCouponDiscount();
         double GetNumberOfDeliveries();

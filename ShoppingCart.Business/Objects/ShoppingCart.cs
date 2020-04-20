@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ShoppingCart.Business.Extensions;
 using ShoppingCart.Business.Interfaces;
 
 namespace ShoppingCart.Business.Objects
@@ -30,7 +31,7 @@ namespace ShoppingCart.Business.Objects
                 return false; //You cannot add a product in cart after applying campaign or coupon
 
             if (product == null || orderQuantity <= 0)
-                return false; //Invalid Products
+                return false; //Invalid item to add
 
             if (CartItems.ContainsKey(product.Title))
                 CartItems[product.Title] = CartItems[product.Title].AddQuantity(orderQuantity);
@@ -56,7 +57,7 @@ namespace ShoppingCart.Business.Objects
 
             foreach (var shoppingCartItem in CartItems.Values)
             {
-                shoppingCartItem.ApplyBestCampaign(campaigns.ToList());
+                shoppingCartItem.ApplyBestCampaign(campaigns);
             }
 
             HasCampaignsApplied = true;
@@ -75,12 +76,13 @@ namespace ShoppingCart.Business.Objects
         public bool ApplyCoupon(Coupon coupon)
         {
             if (HasCouponApplied || CartItems.Count == 0)
-                return false; //A coupon is already applied before. || There is item to apply a coupon.
+                return false; //A coupon is already applied before. || There is no item to apply a coupon.
 
-            var amountAfterCampaignDiscount = GetTotalAmount() - GetCampaignDiscount();
-            if (coupon.IsApplicable(amountAfterCampaignDiscount))
+            var netAmount = GetTotalAmount() - GetCampaignDiscount();
+
+            if (coupon.IsApplicable(netAmount))
             {
-                CouponDiscount = coupon.CalculateDiscount(amountAfterCampaignDiscount);
+                CouponDiscount = coupon.CalculateDiscount(netAmount);
                 HasCouponApplied = true;
             }
 
@@ -138,6 +140,9 @@ namespace ShoppingCart.Business.Objects
 
         public string Print()
         {
+            //This business can be moved in a different object or structure but there is no request to make that new object reusable/extensible etc. Can be implemented here for now.
+
+            //Structure => <categoryTitle , products in this category>
             var groupedProductsByCategory = CartItems
                 .GroupBy(x => x.Value.Product.Category.Title)
                 .ToDictionary(x => x.Key, x => x.ToList());
@@ -150,38 +155,46 @@ namespace ShoppingCart.Business.Objects
                                $"{FormatInfoField("TotalPrice")}" +
                                $"{FormatInfoField("Campaign Discount")}");
 
-            foreach (var categoryGroup in groupedProductsByCategory)
+            if (groupedProductsByCategory.Any())
             {
-                foreach (var product in categoryGroup.Value)
+                foreach (var categoryGroup in groupedProductsByCategory)
                 {
-                    builder.AppendLine($"{FormatInfoField(categoryGroup.Key)}" +
-                                       $"{FormatInfoField(product.Value.Product.Title)}" +
-                                       $"{FormatInfoField(product.Value.OrderQuantity)}" +
-                                       $"{FormatInfoField(product.Value.Product.Price)}" +
-                                       $"{FormatInfoField(product.Value.TotalPrice)}" +
-                                       $"{FormatInfoField(product.Value.BestCampaignDiscount.DiscountAmount)}");
-                    //We cannot add coupon discount here because it can be applied on cart - not on each shopping item
+                    var shoppingCartItems = categoryGroup.Value.Select(x => x.Value);
+                    foreach (var shoppingCartItem in shoppingCartItems)
+                    {
+                        builder.AppendLine($"{FormatInfoField(categoryGroup.Key)}" +
+                                           $"{FormatInfoField(shoppingCartItem.Product.Title)}" +
+                                           $"{FormatInfoField(shoppingCartItem.OrderQuantity.ToCurrencyString())}" +
+                                           $"{FormatInfoField(shoppingCartItem.Product.UnitPrice.ToCurrencyString())}" +
+                                           $"{FormatInfoField(shoppingCartItem.TotalPrice.ToCurrencyString())}" +
+                                           $"{FormatInfoField(shoppingCartItem.BestCampaignDiscount.DiscountAmount.ToCurrencyString())}");
+                        //In request, its wanted but we cannot add coupon discount here because a coupon can be applied on cart - not on each shopping item
+                    }
                 }
+            }
+            else
+            {
+                builder.AppendLine($"{"No item in the cart.",80}");
             }
 
             builder.AppendLine($"{Environment.NewLine}" +
-                               $"Cart Total Amount: {Math.Round(GetTotalAmount(), 2)}{Environment.NewLine}" +
-                               $"Cart Net Amount: {Math.Round(GetTotalAmountAfterDiscounts(), 2)}{Environment.NewLine}" +
-                               $"Campaign Discounts: {Math.Round(GetCampaignDiscount(), 2)}{Environment.NewLine}" +
-                               $"Coupon Discount: {Math.Round(GetCouponDiscount(), 2)}{Environment.NewLine}" +
-                               $"Delivery Cost: {Math.Round(DeliveryCostCalculator.CalculateFor(this), 2)}");
+                               $"{FormatFooterField("Cart Total Amount", GetTotalAmount(), true)}" +
+                               $"{FormatFooterField("Cart Net Amount", GetTotalAmountAfterDiscounts(), true)}" +
+                               $"{FormatFooterField("Campaign Discounts", GetCampaignDiscount(), true)}" +
+                               $"{FormatFooterField("Coupon Discount", GetCouponDiscount(), true)}" +
+                               $"{FormatFooterField("Delivery Cost", DeliveryCostCalculator.CalculateFor(this), false)}");
 
             return builder.ToString();
-            //TODO:Think using builder pattern
         }
 
         private string FormatInfoField(string value)
         {
-            return $"{value,Constants.FieldLengthOnDisplay}{Constants.FieldSeperatorOnDisplay}";
+            return $"{value,Constants.FieldLengthOnDisplay}{Constants.FieldSeparatorOnDisplay}";
         }
-        private string FormatInfoField(double value)
+
+        private string FormatFooterField(string label, double amount, bool appendNewLine)
         {
-            return $"{value,Constants.FieldLengthOnDisplay}{Constants.FieldSeperatorOnDisplay}";
+            return $"{label}: {amount.ToCurrencyString()}{(appendNewLine ? Environment.NewLine : string.Empty)}";
         }
 
         #endregion

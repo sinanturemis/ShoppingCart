@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ShoppingCart.Business.DiscountStrategy;
+﻿using ShoppingCart.Business.DiscountStrategy;
 
 namespace ShoppingCart.Business.Objects
 {

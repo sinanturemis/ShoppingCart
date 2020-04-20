@@ -1,5 +1,4 @@
-﻿using ShoppingCart.Business.DiscountStrategy;
-using ShoppingCart.Business.Factories;
+﻿using ShoppingCart.Business.Factories;
 
 namespace ShoppingCart.Business.Objects
 {

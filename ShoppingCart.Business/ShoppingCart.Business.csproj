@@ -3,5 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
+  <ItemGroup>
+    <ProjectCapability Include="CSharp;Managed;ClassDesigner" />
+  </ItemGroup>
 </Project>
