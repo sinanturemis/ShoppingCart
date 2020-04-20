@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using Moq;
 using NUnit.Framework;
-using ShoppingCart.Business.Interfaces;
 using ShoppingCart.Business.Objects;
 
 namespace ShoppingCart.UnitTest.ShoppingCartTests
@@ -114,6 +112,33 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
 
             Assert.Zero(cartItems.Count);
             Assert.Zero(cartItems.Values.Sum(x => x.OrderQuantity));
+        }
+
+        [Test]
+        public void AddItem_ShouldntBeAdded_WhileThereIsAnAppliedCoupon()
+        {
+            var toshibaTvProduct = new Product("Toshiba Tv", 4000, new Category("Electronic"));
+
+            var firstAttemptToAdd = Cart.AddItem(toshibaTvProduct, 2);
+            Cart.ApplyCoupon(new Coupon(10, 100, DiscountType.Amount));
+            var secondAttemptToAdd = Cart.AddItem(toshibaTvProduct, 2);
+
+            Assert.IsTrue(firstAttemptToAdd);
+            Assert.IsFalse(secondAttemptToAdd);
+        }
+
+        [Test]
+        public void AddItem_ShouldntBeAdded_WhileThereIsAnAppliedCampaign()
+        {
+            var category = new Category("Electronic");
+            var toshibaTvProduct = new Product("Toshiba Tv", 4000, category);
+
+            var firstAttemptToAdd = Cart.AddItem(toshibaTvProduct, 2);
+            Cart.ApplyDiscounts(new Campaign(category, 50, 1, DiscountType.Amount));
+            var secondAttemptToAdd = Cart.AddItem(toshibaTvProduct, 2);
+
+            Assert.IsTrue(firstAttemptToAdd);
+            Assert.IsFalse(secondAttemptToAdd);
         }
 
     }

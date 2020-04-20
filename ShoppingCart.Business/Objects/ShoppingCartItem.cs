@@ -8,7 +8,7 @@ namespace ShoppingCart.Business.Objects
     {
         public Product Product { get; set; }
         public double OrderQuantity { get; set; }
-        public double TotalAmount { get; set; }
+        public double TotalPrice { get; set; }
         public CampaignDiscountModel BestCampaignDiscount { get; set; }
 
         public ShoppingCartItem(Product product, double orderQuantity)
@@ -16,19 +16,19 @@ namespace ShoppingCart.Business.Objects
             this.Product = product;
             this.OrderQuantity = orderQuantity;
             this.BestCampaignDiscount = new CampaignDiscountModel();
-            UpdateTotalAmount();
+            UpdateTotalPrice();
         }
 
         public ShoppingCartItem AddQuantity(double quantity)
         {
             OrderQuantity += quantity;
-            UpdateTotalAmount();
+            UpdateTotalPrice();
             return this;
         }
 
-        private void UpdateTotalAmount()
+        private void UpdateTotalPrice()
         {
-            this.TotalAmount = Product.Price * OrderQuantity;
+            this.TotalPrice = Product.Price * OrderQuantity;
         }
 
         public void ApplyBestCampaign(List<Campaign> campaigns)
