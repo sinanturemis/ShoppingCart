@@ -42,7 +42,7 @@ namespace ShoppingCart.UnitTest.ShoppingCartTests
 
             Cart.AddItem(toshibaTvProduct, 1);
 
-            Assert.AreEqual(2, Cart.GetNumberOfDeliveries());
+            Assert.AreEqual(1, Cart.GetNumberOfDeliveries());
         }
 
         [Test]

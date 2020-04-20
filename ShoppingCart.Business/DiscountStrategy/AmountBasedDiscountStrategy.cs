@@ -1,13 +1,13 @@
 ﻿namespace ShoppingCart.Business.DiscountStrategy
 {
-    public class AmountBasedDiscountStrategy : DiscountBase, IDiscountStrategy
+    public class AmountBasedDiscountStrategy : DiscountBase
     {
         public AmountBasedDiscountStrategy(double discountValue) : base(discountValue)
         {
 
         }
 
-        public double CalculateDiscount(double amount)
+        public override double CalculateDiscount(double amount)
         {
             return DiscountValue;
         }

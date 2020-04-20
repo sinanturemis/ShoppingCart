@@ -1,6 +1,6 @@
 ﻿namespace ShoppingCart.Business.DiscountStrategy
 {
-    public abstract class DiscountBase
+    public abstract class DiscountBase : IDiscountStrategy
     {
         protected double DiscountValue { get; set; }
 
@@ -8,5 +8,7 @@
         {
             DiscountValue = discountValue;
         }
+
+        public abstract double CalculateDiscount(double amount);
     }
 }
