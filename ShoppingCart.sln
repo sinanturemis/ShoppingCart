@@ -9,9 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0C2D83E3-CC5C-4DEB-866C-09B63C7D9BD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCart.Business", "ShoppingCart.Business\ShoppingCart.Business.csproj", "{2E30EA2D-055A-4236-B336-70EE9BA99E5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCart.Business", "ShoppingCart.Business\ShoppingCart.Business.csproj", "{2E30EA2D-055A-4236-B336-70EE9BA99E5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCart.UnitTest", "ShoppingCart.UnitTest\ShoppingCart.UnitTest.csproj", "{05E70914-3191-45EC-9103-CB58CC6B6391}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCart.UnitTest", "ShoppingCart.UnitTest\ShoppingCart.UnitTest.csproj", "{05E70914-3191-45EC-9103-CB58CC6B6391}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCart.Presentation.ConsoleApp", "ShoppingCart.Presentation.ConsoleApp\ShoppingCart.Presentation.ConsoleApp.csproj", "{ECCC01CC-263F-49FB-AE86-1E6B3E0D0FA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{05E70914-3191-45EC-9103-CB58CC6B6391}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05E70914-3191-45EC-9103-CB58CC6B6391}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05E70914-3191-45EC-9103-CB58CC6B6391}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECCC01CC-263F-49FB-AE86-1E6B3E0D0FA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECCC01CC-263F-49FB-AE86-1E6B3E0D0FA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECCC01CC-263F-49FB-AE86-1E6B3E0D0FA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECCC01CC-263F-49FB-AE86-1E6B3E0D0FA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -34,6 +40,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{2E30EA2D-055A-4236-B336-70EE9BA99E5C} = {C89B8E21-D996-47D6-93AA-84BE6198A69D}
 		{05E70914-3191-45EC-9103-CB58CC6B6391} = {0C2D83E3-CC5C-4DEB-866C-09B63C7D9BD0}
+		{ECCC01CC-263F-49FB-AE86-1E6B3E0D0FA2} = {F201083A-27AD-4920-83E0-A5071F19B84F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {52B6281B-1CA4-471C-886E-F99CA2A34589}

@@ -16,6 +16,6 @@ namespace ShoppingCart.Business.Interfaces
         int GetNumberOfProducts();
         double GetTotalAmountAfterDiscounts();
         double GetTotalAmount();
-        void Print();
+        string Print();
     }
 }

@@ -122,7 +122,7 @@ namespace ShoppingCart.Business.Objects
 
         public int GetNumberOfProducts()
         {
-            return CartItems.Count();
+            return CartItems.Count;
         }
 
         #endregion Delivery
@@ -144,10 +144,10 @@ namespace ShoppingCart.Business.Objects
 
         #region Print
 
-        public void Print()
+        public string Print()
         {
             var deliveryCost = DeliveryCostCalculator.CalculateFor(this);
-            Console.WriteLine(deliveryCost);
+            return string.Empty;
             //TODO:Think using builder pattern
         }
 
