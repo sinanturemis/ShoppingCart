@@ -67,7 +67,7 @@ All products in Shopping Cart are kept in a dictionary. Key of the dictionary is
 Delivery Cost Calculator has only one method **CalculateFor**. Takes shopping cart and calculates the cargo price as requested. If there is no product in cart, it will give 0 as result. Because, in this scenario, there won't be any item to deliver.
 
 ### Shopping Cart
-This is the main class in application. Implements IShoppingCart and provides these funcionalities:
+This is the main class in application. Implements IShoppingCart and provides these functionalities:
 - Adding item In cart
 - Applying campaign discounts
 - Returning campaign discount amount
