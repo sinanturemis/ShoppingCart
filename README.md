@@ -27,7 +27,7 @@ This is the general structure of the classes.
 ![Dependency Diagram](SolutionItems/DependencyDiagram.png)
 
 ### Product
-This object has title, unit price and category properties. Also, contains a method ** GetAllCategories ** to get current and its ancestors categories.
+This object has title, unit price and category properties. Also, contains a method **GetAllCategories** to get current and its ancestors categories.
 
 ### Category
 This object has Title and ParentCategory properties. In addition, there are two methods ** HasParent ** and ** GetParent **.
