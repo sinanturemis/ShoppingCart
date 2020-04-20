@@ -9,7 +9,7 @@ namespace ShoppingCart.Presentation.ConsoleApp
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var babyCategory = new Category("Baby");
             var electronicCategory = new Category("Electronic");
@@ -21,7 +21,7 @@ namespace ShoppingCart.Presentation.ConsoleApp
             var samsungTv = new Product("Samsung UHD Tv", 250, tvCategory);
 
             var campaignForElectronic = new Campaign(electronicCategory, 5, 5, DiscountType.Rate);
-            var campaignForLedTv = new Campaign(ledTvCategory, 150, 300, DiscountType.Amount);
+            var campaignForLedTv = new Campaign(ledTvCategory, 550, 1, DiscountType.Amount);
 
             IDeliveryCostCalculator deliveryCostCalculator = new DeliveryCostCalculator(
                 double.Parse(ConfigurationManager.AppSettings["CostPerDeliveryInTry"].Replace('.', ',')),

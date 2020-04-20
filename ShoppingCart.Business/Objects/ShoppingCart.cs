@@ -111,7 +111,8 @@ namespace ShoppingCart.Business.Objects
 
         public double GetNumberOfDeliveries()
         {
-            return CartItems.SelectMany(x => x.Value.Product.GetAllCategories()).Distinct().Count();
+            //I am not sure if I have to account all categories (with parents) or only th exact category. 
+            return CartItems.Select(x => x.Value.Product.Category).Distinct().Count();
         }
 
         public int GetNumberOfProducts()
