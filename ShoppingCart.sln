@@ -13,7 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCart.Business", "Sh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCart.UnitTest", "ShoppingCart.UnitTest\ShoppingCart.UnitTest.csproj", "{05E70914-3191-45EC-9103-CB58CC6B6391}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCart.Presentation.ConsoleApp", "ShoppingCart.Presentation.ConsoleApp\ShoppingCart.Presentation.ConsoleApp.csproj", "{ECCC01CC-263F-49FB-AE86-1E6B3E0D0FA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCart.Presentation.ConsoleApp", "ShoppingCart.Presentation.ConsoleApp\ShoppingCart.Presentation.ConsoleApp.csproj", "{ECCC01CC-263F-49FB-AE86-1E6B3E0D0FA2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02AFCC5F-1BF1-439B-8DAD-C62EF0DA27CC}"
+	ProjectSection(SolutionItems) = preProject
+		SolutionItems\DependencyDiagram.png = SolutionItems\DependencyDiagram.png
+		SolutionItems\TestCoverageReport.zip = SolutionItems\TestCoverageReport.zip
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
