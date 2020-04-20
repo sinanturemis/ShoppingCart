@@ -53,18 +53,17 @@ This class is another abstract class. It implements the **IDiscountStrategy** an
 ### RateBasedDiscountStrategy
 This class is a discount calculation class. Responsibility of this is calculating a rate based discount. It overrides the **CalculateDiscount** method with following formula.
 
-$$(amount * DiscountValue) / 100$$
+> discount = (amount * DiscountValue) / 100
 
 ### AmountBasedDiscountStrategy
 This is another discount calculation class. We can name it also as 'Fixed Discount'. It just returns discount amount.
 
 ### Shopping Cart Item
-
-
-### Shopping Cart
-
+All products in Shopping Cart are kept in a dictionary. Key of the dictionary is productTitle and value is ShoppingCartItem. This class is basicly for each product in shopping cart. It has that properties: product, order quantity and total price for that product in cart and applied best campaign. It has **AddQuantity** and **ApplyBestCampaign** methods. 
+**AddQuantity** increases the quantity of amount in cart when a existing product is added in cart. 
+**ApplyBestCampaign** is run when campaigns are applied. It gets all categories (with ancestor categories) of product. Filters applicable campaigns if they are in categories that the product has and try to find the best discount amount.
 
 ### Delivery Cost Calculator
+Delivery Cost Calculator has only one method **CalculateFor**. Takes shopping cart and calculates the cargo price as requested. If there is no product in cart, it will give 0 as result. Because, in this scenario, there won't be any item to deliver.
 
-
-
+### Shopping Cart
